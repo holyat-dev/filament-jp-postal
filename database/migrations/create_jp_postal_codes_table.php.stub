@@ -1,0 +1,34 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function getConnection(): ?string
+    {
+        return config('jp-postal.drivers.database.connection');
+    }
+
+    public function up(): void
+    {
+        Schema::create(config('jp-postal.drivers.database.table', 'jp_postal_codes'), function (Blueprint $table) {
+            $table->id();
+            $table->char('zipcode', 7)->index();
+            $table->char('local_government_code', 5);
+            $table->char('prefecture_code', 2);
+            $table->string('prefecture');
+            $table->string('city');
+            $table->string('town');
+            $table->string('prefecture_kana')->nullable();
+            $table->string('city_kana')->nullable();
+            $table->string('town_kana')->nullable();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists(config('jp-postal.drivers.database.table', 'jp_postal_codes'));
+    }
+};
