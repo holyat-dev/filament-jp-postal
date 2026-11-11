@@ -1,6 +1,10 @@
 # Filament JP Postal
 
+<div class="filament-hidden">
+
 [![tests](https://github.com/holyat-dev/filament-jp-postal/actions/workflows/tests.yml/badge.svg)](https://github.com/holyat-dev/filament-jp-postal/actions/workflows/tests.yml)
+
+</div>
 
 [日本語](#日本語) | [English](#english)
 
@@ -16,8 +20,8 @@
 - 全角数字・IME 入力に対応、表示は常に `100-0001`
 
 <p>
-  <img src="docs/images/postal-code-input.png" width="420" alt="郵便番号に 100-0001 を入力すると、都道府県「東京都」、市区町村「千代田区」、町域「千代田」が自動入力されたフォーム。郵便番号欄の右に住所検索ボタンがある。">
-  <img src="docs/images/repeater.png" width="300" alt="Repeater の配送先ごとに住所を自動入力した例。160-0023 は東京都・新宿区西新宿、530-0001 は大阪府・大阪市北区梅田。市区町村と町域は 1 つの欄にまとめて入力されている。">
+  <img src="https://raw.githubusercontent.com/holyat-dev/filament-jp-postal/main/docs/images/postal-code-input.png" width="420" alt="郵便番号に 100-0001 を入力すると、都道府県「東京都」、市区町村「千代田区」、町域「千代田」が自動入力されたフォーム。郵便番号欄の右に住所検索ボタンがある。">
+  <img src="https://raw.githubusercontent.com/holyat-dev/filament-jp-postal/main/docs/images/repeater.png" width="300" alt="Repeater の配送先ごとに住所を自動入力した例。160-0023 は東京都・新宿区西新宿、530-0001 は大阪府・大阪市北区梅田。市区町村と町域は 1 つの欄にまとめて入力されている。">
 </p>
 
 ### 動作環境
@@ -206,6 +210,8 @@ Schedule::command('jp-postal:import --force')->monthly();
 php artisan vendor:publish --tag=filament-jp-postal-translations
 ```
 
+<div class="filament-hidden">
+
 ### テスト
 
 ```bash
@@ -213,6 +219,8 @@ composer test
 composer analyse
 composer format
 ```
+
+</div>
 
 ### ライセンス
 
@@ -230,8 +238,8 @@ A [Filament](https://filamentphp.com) v5 form field that fills in the prefecture
 - Accepts full-width digits and IME input; always shows `100-0001`
 
 <p>
-  <img src="docs/images/postal-code-input.png" width="420" alt="A form where entering the postal code 100-0001 fills in the prefecture 東京都, the city 千代田区 and the town 千代田. A lookup button sits to the right of the postal code field.">
-  <img src="docs/images/repeater.png" width="300" alt="A Repeater of delivery addresses, each filled from its own postal code: 160-0023 gives 東京都 and 新宿区西新宿, 530-0001 gives 大阪府 and 大阪市北区梅田, with city and town combined in one field.">
+  <img src="https://raw.githubusercontent.com/holyat-dev/filament-jp-postal/main/docs/images/postal-code-input.png" width="420" alt="A form where entering the postal code 100-0001 fills in the prefecture 東京都, the city 千代田区 and the town 千代田. A lookup button sits to the right of the postal code field.">
+  <img src="https://raw.githubusercontent.com/holyat-dev/filament-jp-postal/main/docs/images/repeater.png" width="300" alt="A Repeater of delivery addresses, each filled from its own postal code: 160-0023 gives 東京都 and 新宿区西新宿, 530-0001 gives 大阪府 and 大阪市北区梅田, with city and town combined in one field.">
 </p>
 
 ### Requirements
@@ -419,6 +427,8 @@ The `database` driver uses the postal code data published by Japan Post Co., Ltd
 php artisan vendor:publish --tag=filament-jp-postal-translations
 ```
 
+<div class="filament-hidden">
+
 ### Testing
 
 ```bash
@@ -426,6 +436,8 @@ composer test
 composer analyse
 composer format
 ```
+
+</div>
 
 ### License
 
