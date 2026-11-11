@@ -4,9 +4,6 @@
 
 [日本語](#日本語) | [English](#english)
 
-<!-- Screenshot: auto-filled address form (docs/images/form.png) -->
-<!-- Screenshot: Repeater with several addresses (docs/images/repeater.png) -->
-
 ---
 
 ## 日本語
@@ -17,6 +14,11 @@
 - `PrefectureSelect` — 47 都道府県のセレクト（値は名前または JIS コード `01`〜`47`）
 - データソースはドライバで切り替え可能：`zipcloud`（初期値）／`database`（日本郵便のデータを取り込み）
 - 全角数字・IME 入力に対応、表示は常に `100-0001`
+
+<p>
+  <img src="docs/images/postal-code-input.png" width="420" alt="郵便番号に 100-0001 を入力すると、都道府県「東京都」、市区町村「千代田区」、町域「千代田」が自動入力されたフォーム。郵便番号欄の右に住所検索ボタンがある。">
+  <img src="docs/images/repeater.png" width="300" alt="Repeater の配送先ごとに住所を自動入力した例。160-0023 は東京都・新宿区西新宿、530-0001 は大阪府・大阪市北区梅田。市区町村と町域は 1 つの欄にまとめて入力されている。">
+</p>
 
 ### 動作環境
 
@@ -224,6 +226,11 @@ A [Filament](https://filamentphp.com) v5 form field that fills in the prefecture
 - `PrefectureSelect` — the 47 prefectures (the value is the name or the JIS code `01`–`47`)
 - Swappable data source: `zipcloud` (default) or `database` (imports Japan Post's data)
 - Accepts full-width digits and IME input; always shows `100-0001`
+
+<p>
+  <img src="docs/images/postal-code-input.png" width="420" alt="A form where entering the postal code 100-0001 fills in the prefecture 東京都, the city 千代田区 and the town 千代田. A lookup button sits to the right of the postal code field.">
+  <img src="docs/images/repeater.png" width="300" alt="A Repeater of delivery addresses, each filled from its own postal code: 160-0023 gives 東京都 and 新宿区西新宿, 530-0001 gives 大阪府 and 大阪市北区梅田, with city and town combined in one field.">
+</p>
 
 ### Requirements
 
