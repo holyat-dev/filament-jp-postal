@@ -93,6 +93,8 @@ final class ImportPostalCodesCommand extends Command
         $file = $this->option('file');
 
         if (is_string($file) && $file !== '') {
+            $file = $this->expandHomeDirectory($file);
+
             if (! is_file($file) || ! is_readable($file)) {
                 throw new PostalCodeImportException("The file [{$file}] does not exist or is not readable.");
             }
@@ -113,6 +115,12 @@ final class ImportPostalCodesCommand extends Command
             throw new PostalCodeImportException('No download URL is configured. Pass --file or --url.');
         }
 
+        $url = $this->expandHomeDirectory($url);
+
+        if (preg_match('#\Ahttps?://#i', $url) !== 1) {
+            throw new PostalCodeImportException("The URL [{$url}] must start with http:// or https://. Use --file for a local file.");
+        }
+
         $path = "{$workDirectory}/download.zip";
 
         $this->components->info("Downloading [{$url}].");
@@ -128,6 +136,25 @@ final class ImportPostalCodesCommand extends Command
         }
 
         return $path;
+    }
+
+    /**
+     * Shells do not expand a tilde right after `=` (e.g. `--file=~/utf_ken_all.zip`), so a leading `~/` is
+     * expanded here. Only the current user's home (`~/`) is supported, not `~user/`.
+     */
+    private function expandHomeDirectory(string $path): string
+    {
+        if (! str_starts_with($path, '~/')) {
+            return $path;
+        }
+
+        $home = $_SERVER['HOME'] ?? getenv('HOME') ?: getenv('USERPROFILE');
+
+        if (! is_string($home) || $home === '') {
+            return $path;
+        }
+
+        return rtrim($home, '/\\').substr($path, 1);
     }
 
     private function isZip(string $path): bool

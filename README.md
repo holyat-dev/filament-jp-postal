@@ -63,6 +63,7 @@ TextInput::make('town')->label(__('filament-jp-postal::messages.town')),
 ```
 
 `PostalCodeInput` と `PrefectureSelect` のラベルは自動で翻訳されます（「郵便番号」「都道府県」）。
+ラベルはアプリの言語に従うため、日本語で表示するには `.env` で `APP_LOCALE=ja` を設定してください。
 自分で用意する市区町村・町域のフィールドには、パッケージの翻訳キー `city`・`town`・`city_town` を使えます。
 
 #### 2. Repeater の中で使う
@@ -167,6 +168,7 @@ php artisan jp-postal:import --url=https://example.com/utf_ken_all.zip
 
 - 取り込み中は一時テーブルに書き込み、最後に入れ替えるので、取り込み中も検索できます。
 - 本番環境（`APP_ENV=production`）では確認が出ます。スケジューラなどでは `--force` を付けてください。
+- `--file=~/utf_ken_all.zip` の `~` はシェルでは展開されませんが、このコマンドがホームディレクトリに置き換えます。`--file ~/utf_ken_all.zip`（空白区切り）でも指定できます。
 
 月 1 回の更新例（`routes/console.php`）：
 
@@ -275,6 +277,7 @@ TextInput::make('town')->label(__('filament-jp-postal::messages.town')),
 ```
 
 `PostalCodeInput` and `PrefectureSelect` come with translated labels. For your own city and town fields, the package's translation keys `city`, `town` and `city_town` are available.
+Labels follow the application locale, so set `APP_LOCALE=ja` in `.env` to show them in Japanese.
 
 #### 2. Inside a Repeater
 
@@ -378,6 +381,7 @@ php artisan jp-postal:import --url=https://example.com/utf_ken_all.zip
 
 - Rows are written to a temporary table that replaces the live one at the end, so lookups keep working during an import.
 - In production (`APP_ENV=production`) the command asks for confirmation. Pass `--force` from the scheduler.
+- Shells do not expand the `~` in `--file=~/utf_ken_all.zip`, but the command replaces it with your home directory. `--file ~/utf_ken_all.zip` (separated by a space) works as well.
 
 Monthly update (`routes/console.php`):
 

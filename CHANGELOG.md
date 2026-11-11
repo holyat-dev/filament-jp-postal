@@ -5,6 +5,40 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-11-11
+
+### 日本語
+
+#### 修正
+
+- `jp-postal:import` の `--file` と `--url` で、先頭の `~/` をホームディレクトリに置き換えるようにしました。シェルは `--file=~/…` の `~` を展開しないため、ファイルが見つからないエラーになっていました。
+- `--url` が `http://` または `https://` で始まらない場合は、ダウンロードを試みずにエラーにして `--file` を案内するようにしました。
+
+#### 変更
+
+- 配布パッケージ（Composer の dist）から開発用ファイル（`tests`、`docs`、`.github`、`CLAUDE.md`、PHPStan・PHPUnit・Pint の設定）を除外しました。
+
+#### ドキュメント
+
+- ラベルはアプリの言語に従うため、日本語表示には `APP_LOCALE=ja` が必要であることを README に追記しました。
+- `--file=~/…` と `--file ~/…` の扱いを README に追記しました。
+
+### English
+
+#### Fixed
+
+- `jp-postal:import` now expands a leading `~/` in `--file` and `--url` to the home directory. Shells do not expand the `~` in `--file=~/…`, so the file was reported as missing.
+- `--url` values that do not start with `http://` or `https://` now fail with a hint to use `--file`, instead of being passed to the HTTP client.
+
+#### Changed
+
+- Development files (`tests`, `docs`, `.github`, `CLAUDE.md`, and the PHPStan, PHPUnit and Pint configs) are left out of the distributed package (Composer dist).
+
+#### Documentation
+
+- README: labels follow the application locale, so `APP_LOCALE=ja` is needed to show them in Japanese.
+- README: how `--file=~/…` and `--file ~/…` are handled.
+
 ## [1.0.0] - 2026-11-11
 
 ### 日本語
@@ -21,7 +55,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
   - マスクを使わないクライアント側の整形で全角数字・IME 入力に対応し、表示は常に `100-0001`。
 - `PrefectureSelect` フォームフィールド：JIS 順の 47 都道府県、値は名前または JIS コード（`codes()`）、常に文字列で保存。
 - `JpPostal` ファサードと `JpPostalManager`：`PostalCodeDriver` 契約、入力の正規化、結果のキャッシュ、`extend()` による独自ドライバ。
-- `zipcloud` ドライバ（初期値）：タイムアウト、1 回の再試行、カナの全角変換。
+- `zipcloud` ドライバ（デフォルト）：タイムアウト、1 回の再試行、カナの全角変換。
 - `database` ドライバと `jp-postal:import` コマンド：日本郵便の `utf_ken_all` データを取り込み（ダウンロード、`--file`、`--url`、`--force`）。一時テーブルに書き込んでから入れ替え。
 - 町域の正規化規則：2026 年 10 月更新のデータ全 124,527 行で検証。
 - 翻訳：日本語・英語・韓国語。
@@ -45,5 +79,6 @@ First release.
 - Town name normalization rules verified against all 124,527 rows of the October 2026 data.
 - Translations: Japanese, English and Korean.
 
-[Unreleased]: https://github.com/holyat-dev/filament-jp-postal/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/holyat-dev/filament-jp-postal/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/holyat-dev/filament-jp-postal/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/holyat-dev/filament-jp-postal/releases/tag/v1.0.0

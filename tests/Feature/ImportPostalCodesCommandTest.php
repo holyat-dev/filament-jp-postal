@@ -163,6 +163,72 @@ it('rejects invalid files and keeps the existing data', function (Closure $file,
     'broken zip' => [fn () => makeCsv("PK\x03\x04broken"), 'not a valid ZIP archive'],
 ]);
 
+it('expands a leading ~/ in --file to the home directory', function (): void {
+    $home = sys_get_temp_dir().'/jp-postal-home-'.bin2hex(random_bytes(4));
+    mkdir("{$home}/data", recursive: true);
+    copy(fixturePath(), "{$home}/data/utf_ken_all.csv");
+    $originalHome = $_SERVER['HOME'] ?? null;
+    $_SERVER['HOME'] = $home;
+
+    try {
+        // The shell leaves 「--file=~/...」 untouched, so the command receives the tilde itself.
+        $this->artisan('jp-postal:import', ['--file' => '~/data/utf_ken_all.csv'])
+            ->expectsOutputToContain("Importing [{$home}/data/utf_ken_all.csv]")
+            ->assertSuccessful();
+    } finally {
+        $_SERVER['HOME'] = $originalHome;
+        unlink("{$home}/data/utf_ken_all.csv");
+        rmdir("{$home}/data");
+        rmdir($home);
+    }
+
+    expect(DB::table('jp_postal_codes')->count())->toBe(FIXTURE_ROWS);
+});
+
+it('reports the expanded path when a ~/ file does not exist', function (): void {
+    $originalHome = $_SERVER['HOME'] ?? null;
+    $_SERVER['HOME'] = '/home/someone';
+
+    try {
+        $this->artisan('jp-postal:import', ['--file' => '~/missing.zip'])
+            ->expectsOutputToContain('The file [/home/someone/missing.zip] does not exist')
+            ->assertFailed();
+    } finally {
+        $_SERVER['HOME'] = $originalHome;
+    }
+});
+
+it('leaves ~user/ and paths that only contain a tilde alone', function (string $path): void {
+    $this->artisan('jp-postal:import', ['--file' => $path])
+        ->expectsOutputToContain("The file [{$path}] does not exist")
+        ->assertFailed();
+})->with(['~someone/utf_ken_all.zip', 'data/~/utf_ken_all.zip', '~']);
+
+it('expands a leading ~/ in --url and asks for --file', function (): void {
+    seedExistingRow();
+    $originalHome = $_SERVER['HOME'] ?? null;
+    $_SERVER['HOME'] = '/home/someone';
+
+    try {
+        $this->artisan('jp-postal:import', ['--url' => '~/utf_ken_all.zip'])
+            ->expectsOutputToContain('The URL [/home/someone/utf_ken_all.zip] must start with http:// or https://. Use --file for a local file.')
+            ->assertFailed();
+    } finally {
+        $_SERVER['HOME'] = $originalHome;
+    }
+
+    expectOnlyExistingRow();
+    Http::assertNothingSent();
+});
+
+it('rejects a url that is not http or https', function (string $url): void {
+    $this->artisan('jp-postal:import', ['--url' => $url])
+        ->expectsOutputToContain('must start with http:// or https://')
+        ->assertFailed();
+
+    Http::assertNothingSent();
+})->with(['ftp://example.test/data.zip', '/tmp/utf_ken_all.zip', 'utf_ken_all.zip']);
+
 it('fails when the table has not been migrated', function (): void {
     Schema::drop('jp_postal_codes');
 
